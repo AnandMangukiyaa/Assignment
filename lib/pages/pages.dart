@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_assignment/blocs/authentication/authentication_bloc.dart';

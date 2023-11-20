@@ -11,6 +11,29 @@ class _HomePageState extends State<HomePage> {
   int selectedIndex = 0;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  checkToken() async{
+    Future.delayed(Duration(minutes: 1)).then((value) {
+      try{
+        String? email = PreferencesService.pref!.getString("email");
+        String? password = PreferencesService.pref!.getString("password");
+        String? token = PreferencesService.pref!.getString("${email}Token");
+
+        String pass = "${email}MyToken${password}";
+
+        JWT.verify(token!, SecretKey(pass));
+        checkToken();
+      } on JWTExpiredException catch (e){
+        Navigator.pushReplacementNamed(context, Routes.login);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     String? email = PreferencesService.pref!.getString("email");
     return Scaffold(

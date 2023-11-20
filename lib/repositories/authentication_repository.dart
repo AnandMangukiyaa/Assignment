@@ -35,7 +35,7 @@ class AuthenticationRepository {
         );
 
 // Sign it (default with HS256 algorithm)
-        final token = jwt.sign(SecretKey(yourToken));
+        final token = jwt.sign(SecretKey(yourToken),expiresIn: Duration(hours: 1),);
         PreferencesService.pref!.setString("${email}Token", token);
 
         return AuthResult(status: true, user: true);
