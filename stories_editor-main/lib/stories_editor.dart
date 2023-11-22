@@ -1,6 +1,8 @@
 // ignore_for_file: must_be_immutable
 library stories_editor;
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -49,10 +51,14 @@ class StoriesEditor extends StatefulWidget {
   /// gallery thumbnail quality
   final int? galleryThumbnailQuality;
 
+  ///Captured File
+  final File? file;
+
   const StoriesEditor(
       {Key? key,
       required this.giphyKey,
       required this.onDone,
+      required this.file,
       this.middleBottomWidget,
       this.colorList,
       this.gradientColors,
@@ -109,6 +115,7 @@ class _StoriesEditorState extends State<StoriesEditor> {
           child: MainView(
             giphyKey: widget.giphyKey,
             onDone: widget.onDone,
+            file:widget.file,
             fontFamilyList: widget.fontFamilyList,
             isCustomFontList: widget.isCustomFontList,
             middleBottomWidget: widget.middleBottomWidget,

@@ -1,154 +1,78 @@
 part of 'models.dart';
+List<UserData> userDataFromJson(dynamic str) => List<UserData>.from(str.map((x) => UserData.fromJson(x)));
 
+String userDataToJson(List<UserData> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 class UserData {
-  String? userId;
-  String? nickName;
+  int? id;
   String? name;
   String? email;
-  String? password;
-  String? state;
-  String? city;
-  String? photoUrl;
-  String? authType; // 0 = Email/Password, 1 = Google, 2 = Apple, 3 = Facebook
-  bool? isEnable;
-  BankDetails? bankDetails;
-  String? paypalId;
-  String? deviceToken;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  bool? notification_approved;
-  bool? notification_payout;
-  bool? notification_newJobPost;
+  Gender? gender;
+  Status? status;
 
   UserData({
-    this.userId,
-    this.nickName,
+    this.id,
     this.name,
     this.email,
-    this.password,
-    this.state,
-    this.city,
-    this.photoUrl,
-    this.authType,
-    this.isEnable,
-    this.bankDetails,
-    this.paypalId,
-    this.deviceToken,
-    this.createdAt,
-    this.updatedAt,
-    this.notification_approved,
-    this.notification_newJobPost,
-    this.notification_payout
+    this.gender,
+    this.status,
   });
 
-  factory UserData.fromMap(Map<String, dynamic> data) {
-    return UserData(
-      userId: data['userId'],
-      nickName: data['nickName'],
-      name: data['name'],
-      email: data['email'],
-      password: data['password'],
-      state: data['state'],
-      city: data['city'],
-      photoUrl: data['photoUrl'],
-      authType: data['authType'],
-      isEnable: data['isEnable'],
-      paypalId: data['paypalId'],
-      deviceToken: data['deviceToken'],
-      notification_payout: data['notification_payout'],
-      notification_newJobPost: data['notification_newJobPost'],
-      notification_approved: data['notification_approved'],
-      bankDetails: data['bankDetails'] != null
-          ? BankDetails.fromMap(data['bankDetails'])
-          : null,
-      createdAt:
-          DateTime.fromMillisecondsSinceEpoch(int.parse(data['createdAt'])),
-      updatedAt:
-          DateTime.fromMillisecondsSinceEpoch(int.parse(data['updatedAt'])),
-    );
-  }
+  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
+    id: json["id"],
+    name: json["name"],
+    email: json["email"],
+    gender: genderValues.map[json["gender"]]!,
+    status: statusValues.map[json["status"]]!,
+  );
 
-  bool get hasData => userId != null;
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "email": email,
+    "gender": genderValues.reverse[gender],
+    "status": statusValues.reverse[status],
+  };
 
   factory UserData.empty() {
     return UserData(
-      userId: null,
-      nickName: null,
+      id: null,
       name: null,
       email: null,
-      password: null,
-      state: null,
-      city: null,
-      photoUrl: null,
-      authType: null,
-      isEnable: null,
-      bankDetails: null,
-      paypalId: null,
-      createdAt: null,
-      updatedAt: null,
-      deviceToken: null,
-      notification_approved: true,
-      notification_newJobPost: true,
-      notification_payout: true,
+      gender: null,
+      status: null
     );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'userId': userId,
-      'nickName': nickName,
-      'name': name,
-      'email': email,
-      'password': password,
-      'state': state,
-      'city': city,
-      'photoUrl': photoUrl,
-      'authType': authType,
-      'isEnable': isEnable,
-      'paypalId': paypalId,
-      'deviceToken': deviceToken,
-      'bankDetails': bankDetails?.toMap(),
-      'createdAt': createdAt?.millisecondsSinceEpoch.toString(),
-      'updatedAt': updatedAt?.millisecondsSinceEpoch.toString(),
-      'notification_approved' : notification_approved,
-      'notification_newJobPost': notification_newJobPost,
-      'notification_payout' : notification_payout
-    };
   }
 }
 
-class BankDetails {
-  String? accountNumber;
-  String? ifscCode;
-  String? bankName;
-  String? branchName;
-  String? accountHolderName;
 
-  BankDetails({
-    this.accountNumber,
-    this.ifscCode,
-    this.bankName,
-    this.branchName,
-    this.accountHolderName,
-  });
+enum Gender {
+  FEMALE,
+  MALE
+}
 
-  factory BankDetails.fromMap(Map<String, dynamic> data) {
-    return BankDetails(
-      accountNumber: data['accountNumber'],
-      ifscCode: data['ifscCode'],
-      bankName: data['bankName'],
-      branchName: data['branchName'],
-      accountHolderName: data['accountHolderName'],
-    );
-  }
+final genderValues = EnumValues({
+  "female": Gender.FEMALE,
+  "male": Gender.MALE
+});
 
-  Map<String, dynamic> toMap() {
-    return {
-      'accountNumber': accountNumber,
-      'ifscCode': ifscCode,
-      'bankName': bankName,
-      'branchName': branchName,
-      'accountHolderName': accountHolderName,
-    };
+enum Status {
+  ACTIVE,
+  INACTIVE
+}
+
+final statusValues = EnumValues({
+  "active": Status.ACTIVE,
+  "inactive": Status.INACTIVE
+});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
   }
 }

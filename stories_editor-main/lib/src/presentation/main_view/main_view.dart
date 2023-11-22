@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -58,12 +60,15 @@ class MainView extends StatefulWidget {
   /// gallery thumbnail quality
   final int? galleryThumbnailQuality;
 
+  File? file;
+
   /// editor custom color palette list
   List<Color>? colorList;
   MainView(
       {Key? key,
       required this.giphyKey,
       required this.onDone,
+      required this.file,
       this.middleBottomWidget,
       this.colorList,
       this.isCustomFontList,
@@ -100,7 +105,13 @@ class _MainViewState extends State<MainView> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var _control = Provider.of<ControlNotifier>(context, listen: false);
-
+      var itemProvider = Provider.of<DraggableWidgetNotifier>(context, listen: false);
+      _control.mediaPath = widget.file!.path;
+      itemProvider.draggableWidget.insert(
+          0,
+          EditableItem()
+            ..type = ItemType.image
+            ..position = const Offset(0.0, 0));
       /// initialize control variable provider
       _control.giphyKey = widget.giphyKey;
       _control.middleBottomWidget = widget.middleBottomWidget;

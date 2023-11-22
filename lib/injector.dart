@@ -1,5 +1,6 @@
 
 import 'package:flutter_assignment/blocs/authentication/authentication_bloc.dart';
+import 'package:flutter_assignment/blocs/images/images_bloc.dart';
 import 'package:flutter_assignment/blocs/user/user_bloc.dart';
 import 'package:flutter_assignment/repositories/authentication_repository.dart';
 import 'package:flutter_assignment/repositories/user_repository.dart';
@@ -11,6 +12,7 @@ class Injector {
   static void init() {
     // Repositories
     GetIt.I.registerFactory(() => AuthenticationRepository());
+    GetIt.I.registerFactory(() => ImagesBloc());
     GetIt.I.registerFactory(() {
       return UserRepository( auth: GetIt.I());
     });

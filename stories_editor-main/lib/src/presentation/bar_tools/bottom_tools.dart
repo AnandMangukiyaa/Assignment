@@ -43,24 +43,7 @@ class BottomTools extends StatelessWidget {
                       child: _preViewContainer(
                         /// if [model.imagePath] is null/empty return preview image
                         child: controlNotifier.mediaPath.isEmpty
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    /// scroll to gridView page
-                                    if (controlNotifier.mediaPath.isEmpty) {
-                                      scrollNotifier.pageController
-                                          .animateToPage(1,
-                                              duration: const Duration(
-                                                  milliseconds: 300),
-                                              curve: Curves.ease);
-                                    }
-                                  },
-                                  child: const CoverThumbnail(
-                                    thumbnailQuality: 150,
-                                  ),
-                                ))
-
+                            ? SizedBox.shrink()
                             /// return clear [imagePath] provider
                             : GestureDetector(
                                 onTap: () {
@@ -132,7 +115,7 @@ class BottomTools extends StatelessWidget {
                                     mainAxisSize: MainAxisSize.min,
                                     children: const [
                                       Text(
-                                        'Share',
+                                        'Done',
                                         style: TextStyle(
                                             color: Colors.white,
                                             letterSpacing: 1.5,
