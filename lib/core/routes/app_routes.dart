@@ -12,6 +12,7 @@ class Routes {
   static const String home = "./home";
   static const String login = "./login";
   static const String addUser = "./add_user";
+  static const String generatePdf = "./generate_pdf";
 }
 
 class RouteGenerator {
@@ -24,6 +25,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const HomePage());
       case Routes.addUser:
         return MaterialPageRoute(builder: (_) => AddUserPage(user: args != null ? args as UserData:null,));
+      case Routes.generatePdf:
+        return MaterialPageRoute(builder: (_) => UsersPDFScreen( args as List<UserData>,));
       case Routes.login:
         return MaterialPageRoute(
             builder: (_) => const SignInPage());

@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               leading: Icon(
-                Icons.image_sharp,
+                Icons.photo_library,
               ),
               title: const Text('Saved Image'),
               onTap: () {
@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               leading: Icon(
-                Icons.image_sharp,
+                Icons.supervised_user_circle,
               ),
               title: const Text('Users'),
               onTap: () {

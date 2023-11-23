@@ -69,12 +69,21 @@ super.initState();
             return Scaffold(
                 bottomNavigationBar: Padding(
                   padding: EdgeInsets.symmetric(vertical: Sizes.s8.h,horizontal: Sizes.s16.w),
-                  child: PrimaryButton(onPressed: () async{
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      PrimaryButton(onPressed: () async{
                         var created = await Navigator.pushNamed(context, Routes.addUser);
                         if(created as bool){
                           _userBloc.getUsers();
                         }
-                  }, label: "Add user",),
+                      }, label: "Add user",),
+                      SizedBox(height: Sizes.s8.h,),
+                      PrimaryButton(onPressed: () async{
+                             Navigator.pushNamed(context, Routes.generatePdf,arguments: state.users);
+                      }, label: "All User Pdf",),
+                    ],
+                  ),
                 ),
               body: Padding(
                 padding: EdgeInsets.only(top:Sizes.s16.h,left: Sizes.s8.w,right: Sizes.s8.w),

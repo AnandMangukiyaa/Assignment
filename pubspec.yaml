@@ -53,6 +53,10 @@ dependencies:
   photo_gallery : ^2.1.1
   transparent_image: ^2.0.0
 
+  #Generate PDF
+  pdf: ^3.9.0
+  printing: ^5.10.4
+
   # State Management
   provider: ^6.0.2
   flutter_bloc: ^8.0.1
