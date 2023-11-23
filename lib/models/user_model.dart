@@ -26,10 +26,15 @@ class UserData {
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
     "name": name,
     "email": email,
     "gender": genderValues.reverse[gender],
+    "status": statusValues.reverse[status],
+  };
+
+  Map<String, dynamic> toupdateJson() => {
+    "name": name,
+    "email": email,
     "status": statusValues.reverse[status],
   };
 

@@ -1,7 +1,7 @@
 part of 'services.dart';
 
 // Request type
-enum RequestType { post, get }
+enum RequestType { post, get,patch }
 
 class HttpService {
   final Client _instance;
@@ -23,6 +23,20 @@ class HttpService {
               body: parameter, headers: {
               "Content-Type":"application/json",
                "Accept":"application/json",
+                "Authorization":"Bearer ${ApiUrls.token}"
+              });
+
+          if (response.statusCode == 200) {
+            return Result.success(jsonDecode(response.body));
+          } else {
+            return Result.error(_exception);
+          }
+        //Send a PATCH request with the given parameter
+        case RequestType.patch:
+          final Response response = await _instance.patch(Uri.parse(url),
+              body: parameter, headers: {
+                "Content-Type":"application/json",
+                "Accept":"application/json",
                 "Authorization":"Bearer ${ApiUrls.token}"
               });
 

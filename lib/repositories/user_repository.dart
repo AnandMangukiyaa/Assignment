@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_assignment/core/constants/constants.dart';
@@ -13,13 +14,38 @@ class UserRepository {
   UserRepository({required this.auth});
   final HttpService _http = HttpService();
 
-  Future<void> createUser(UserData user) async {
-    // return collections.userDoc(user.userId ?? '').set(user.toMap());
+  Future<bool> createUser(UserData user) async {
+    try{
+      String params = jsonEncode(user.toJson());
+      Result response = await _http.request(requestType: RequestType.post, url: "${ApiUrls.baseUrl}${ApiUrls.getUsers}",parameter: params);
+      if(response is Success){
+        return true;
+      }else{
+        return false;
+      }
+    }catch (e) {
+      return false;
+    }
   }
 
-  Future<List<UserData>> getUsers() async{
+  Future<bool> updateUser(UserData user) async {
     try{
-      Result response = await _http.request(requestType: RequestType.get, url: "${ApiUrls.baseUrl}${ApiUrls.getUsers}");
+      String params = jsonEncode(user.toupdateJson());
+      String url = "${ApiUrls.baseUrl}${ApiUrls.getUsers}/${user.id!}";
+      Result response = await _http.request(requestType: RequestType.patch, url: url,parameter: params);
+      if(response is Success){
+        return true;
+      }else{
+        return false;
+      }
+    }catch (e) {
+      return false;
+    }
+  }
+
+  Future<List<UserData>> getUsers(int page) async{
+    try{
+      Result response = await _http.request(requestType: RequestType.get, url: "${ApiUrls.baseUrl}${ApiUrls.getUsers}?page=$page&per_page=20");
       if(response is Success){
           return userDataFromJson(response.value);
       }else{

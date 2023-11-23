@@ -69,16 +69,16 @@ mixin ValidationMixin {
     return null;
   }
 
-  String? stateValidation(String? value) {
+  String? genderValidation(String? value) {
     if (value!.isEmpty) {
-      return 'Please select state';
+      return 'Please select gender';
     }
     return null;
   }
 
-  String? cityValidation(String? value) {
+  String? statusValidation(String? value) {
     if (value!.isEmpty) {
-      return 'Please select city';
+      return 'Please select status';
     }
     return null;
   }

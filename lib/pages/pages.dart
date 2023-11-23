@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ import 'package:flutter_assignment/core/enums/enums.dart';
 import 'package:flutter_assignment/core/helpers/helpers.dart';
 import 'package:flutter_assignment/core/routes/app_routes.dart';
 import 'package:flutter_assignment/core/utils/utils.dart';
+import 'package:flutter_assignment/models/models.dart';
+import 'package:flutter_assignment/pages/dialogs/app_dialogs.dart';
 import 'package:flutter_assignment/pages/widgets/widgets.dart';
 import 'package:flutter_assignment/services/services.dart';
 import 'package:get_it/get_it.dart';
@@ -36,3 +39,4 @@ part 'contact_us.dart';
 part 'edit image.dart';
 part 'saved_images.dart';
 part 'users_page.dart';
+part 'add_user.dart';
