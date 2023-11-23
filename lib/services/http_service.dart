@@ -1,7 +1,7 @@
 part of 'services.dart';
 
 // Request type
-enum RequestType { post, get }
+enum RequestType { post, get,patch }
 
 class HttpService {
   final Client _instance;
@@ -20,7 +20,25 @@ class HttpService {
         // Send a POST request with the given parameter.
         case RequestType.post:
           final Response response = await _instance.post(Uri.parse(url),
-              body: parameter, headers: headers);
+              body: parameter, headers: {
+              "Content-Type":"application/json",
+               "Accept":"application/json",
+                "Authorization":"Bearer ${ApiUrls.token}"
+              });
+
+          if (response.statusCode == 200) {
+            return Result.success(jsonDecode(response.body));
+          } else {
+            return Result.error(_exception);
+          }
+        //Send a PATCH request with the given parameter
+        case RequestType.patch:
+          final Response response = await _instance.patch(Uri.parse(url),
+              body: parameter, headers: {
+                "Content-Type":"application/json",
+                "Accept":"application/json",
+                "Authorization":"Bearer ${ApiUrls.token}"
+              });
 
           if (response.statusCode == 200) {
             return Result.success(jsonDecode(response.body));
@@ -31,7 +49,9 @@ class HttpService {
         // Send a GET request with the given parameter.
         case RequestType.get:
           final Response response =
-              await _instance.get(Uri.parse(url), headers: headers);
+              await _instance.get(Uri.parse(url), headers: {
+                "Authorization":"Bearer ${ApiUrls.token}"
+              });
 
           if (response.statusCode == 200) {
             return Result.success(jsonDecode(response.body));

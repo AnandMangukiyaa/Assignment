@@ -8,6 +8,7 @@ part 'app_colors.dart';
 part 'app_assets.dart';
 part 'app_font_family.dart';
 part 'app_sizes.dart';
+part 'api_urls.dart';
 
 const String appName = 'MyTickets';
 

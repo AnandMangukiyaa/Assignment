@@ -65,6 +65,7 @@ class _SignInPageState extends State<SignInPage> with ValidationMixin {
                 SnackUtils(context).showSnakBar(state.message);
 
                 Future.delayed(const Duration(milliseconds: 500), () {
+                  PreferencesService.pref!.setBool("isLogin", true);
                   Navigator.pushReplacementNamed(context, Routes.home);
                 });
 

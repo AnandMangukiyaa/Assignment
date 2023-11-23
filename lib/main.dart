@@ -31,15 +31,17 @@ void main() async{
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    bool? isLogin = PreferencesService.pref!.getBool("isLogin");
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: appName,
       navigatorKey: navigatorKey,
       theme: ThemeUtils.theme,
-      initialRoute: Routes.login,
+      initialRoute:isLogin ?? false ? Routes.home: Routes.login,
       onGenerateRoute: RouteGenerator.generateRoute,
       builder: (context, child) {
         return ScrollConfiguration(

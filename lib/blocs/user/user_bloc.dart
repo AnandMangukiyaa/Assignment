@@ -5,6 +5,7 @@ import 'package:flutter_assignment/models/models.dart';
 import 'package:flutter_assignment/repositories/user_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_assignment/services/services.dart';
 
 part 'user_state.dart';
 
@@ -12,63 +13,77 @@ class UserBloc extends Cubit<UserState> {
   final UserRepository userRepository;
 
   UserBloc({required this.userRepository}) : super(const UserState());
+  List<UserData> users = [];
 
-  void initBloc(UserData? user) {
-    emit(state.update(user: user));
-  }
+  int page = 1;
 
-  void nameChanged(String? name) {
-    if (name != null) {
-      state.user?.name = name;
-      emit(state.update(user: state.user));
-    }
-  }
-
-  void nickNameChanged(String? nickName) {
-    if (nickName != null) {
-      state.user?.nickName = nickName;
-      emit(state.update(user: state.user));
-    }
-  }
-
-  void stateChanged(String? s) {
-    if (s != null) {
-      state.user?.state = s;
-      emit(state.update(user: state.user));
-    }
-  }
-
-  void cityChanged(String? city) {
-    if (city != null) {
-      state.user?.city = city;
-      emit(state.update(user: state.user));
-    }
-  }
-
-  Future<void> saveUser(File? file) async {
+  getUsers() async{
     try {
-      // if (state.user != null) {
-      //   emit(state.update(status: ResultStatus.loading));
-      //
-      //   if (file != null) {
-      //     String? photoUrl = await userRepository.uploadPhoto(file);
-      //     state.user?.photoUrl = photoUrl;
-      //   }
-      //
-      //   await userRepository.updateUser(state.user!);
-      //   emit(state.update(status: ResultStatus.success));
-      // } else {
-      //   emit(
-      //     state.update(
-      //       status: ResultStatus.failure,
-      //       message: 'Something went wrong, please try again later.',
-      //     ),
-      //   );
-      // }
+      if(await ConnectivityService.isConnected) {
+        emit(state.update(status: ResultStatus.loading));
+        List<UserData> users = await userRepository.getUsers(page);
+        this.users.addAll(users);
+        if (users.isNotEmpty) {
+          page++;
+          emit(state.update(users: this.users, status: ResultStatus.success));
+        } else {
+          emit(state.update(
+              message: "Something went wrong", status: ResultStatus.failure));
+        }
+      }else{
+        emit(state.update(
+            message: "Check your internet connection", status: ResultStatus.failure));
+      }
     } catch (e) {
-      emit(
-        state.update(status: ResultStatus.failure, message: e.toString()),
-      );
+      print(e);
+      emit(state.update(message: "Something went wrong",status: ResultStatus.failure));
     }
   }
+
+  createUser(UserData user) async{
+    try {
+      if(await ConnectivityService.isConnected) {
+        emit(state.update(status: ResultStatus.loading));
+      bool created = await userRepository.createUser(user);
+      // if(created) {
+        emit(state.update(users: [],status: ResultStatus.success));
+      /*}else{
+        emit(state.update(message: "Something went wrong",status: ResultStatus.failure));
+      }*/
+      }else{
+        emit(state.update(
+            message: "Check your internet connection", status: ResultStatus.failure));
+      }
+    } catch (e) {
+      print(e);
+      emit(state.update(message: "Something went wrong",status: ResultStatus.failure));
+    }
+  }
+
+  updateUser(UserData user) async{
+    try {
+      if(await ConnectivityService.isConnected) {
+        emit(state.update(status: ResultStatus.loading));
+      bool updated = await userRepository.updateUser(user);
+      if(updated) {
+        emit(state.update(users: [],status: ResultStatus.success));
+      }else{
+        emit(state.update(message: "Something went wrong",status: ResultStatus.failure));
+      }
+      }else{
+        emit(state.update(
+            message: "Check your internet connection", status: ResultStatus.failure));
+      }
+    } catch (e) {
+      print(e);
+      emit(state.update(message: "Something went wrong",status: ResultStatus.failure));
+    }
+  }
+
+
+
+
+
+
+
 }
